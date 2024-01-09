@@ -4,20 +4,34 @@ import axios from 'axios'
 
 const Admin = () => {
   const [orders, setOrders] = useState([])
-  const [served, setServed] = useState(false)
+  const [servedState, setServed] = useState([])
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const rid = window.localStorage.getItem('rid');
-      const { data } = await axios.get(`http://localhost:8080/menu/nonServed/${rid}`)
+      const rid = window.localStorage.getItem('rid')
+      const { data } = await axios.get(
+        `http://localhost:8080/menu/nonServed/${rid}`
+      )
       setOrders(data)
+      setServed(Array(data.length).fill(false))
     }
     fetchOrders()
-  },[])
+  }, [])
 
-  const changeServedStatus = async (e) => {
-    e.preventDefault()
-    setServed(true)
+  const changeServedStatus = async (index) => {
+    setServed((prevservedState) =>
+      prevservedState.map((i) =>
+        i === index ? servedState(false) : servedState(true)
+      )
+    )
+
+    const fetchServedOrders = async () => {
+      const { data } = await axios.get(
+        `http://localhost:8080/menu/updateServed/${orders.oid}`
+      )
+      setOrders(data)
+    }
+    fetchServedOrders()
   }
 
   return (
@@ -47,11 +61,11 @@ const Admin = () => {
               <td>{order.tableno}</td>
               <td>
                 <Button
-                  onClick={changeServedStatus}
-                  variant={served ? 'primary' : 'light'}
+                  onClick={() => changeServedStatus(order.oid)}
+                  variant={servedState ? 'primary' : 'light'}
                   className="btn-sm"
                 >
-                  {served ? 'Yes' : 'No'}
+                  {servedState[order.oid] ? 'Yes' : 'No'}
                 </Button>
               </td>
             </tr>
