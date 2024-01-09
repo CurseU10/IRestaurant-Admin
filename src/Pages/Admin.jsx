@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react'
-import { Table, Button } from 'react-bootstrap'
-import axios from 'axios'
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Table, Button } from "react-bootstrap";
+import axios from "axios";
 
 const Admin = () => {
-  const [orders, setOrders] = useState([])
-  const [servedState, setServed] = useState([])
-
+  const [orders, setOrders] = useState([]);
+  const [servedState, setServedState] = useState([]);
+  const [servedOrderID,setServedOrderID] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchOrders = async () => {
       const rid = window.localStorage.getItem('rid')
@@ -13,30 +15,32 @@ const Admin = () => {
         `http://localhost:8080/menu/nonServed/${rid}`
       )
       setOrders(data)
-      setServed(Array(data.length).fill(false))
+      const savedState = JSON.parse(localStorage.getItem('servedState'))
+      if (savedState) {
+        setServedState(savedState)
+      } else {
+        setServedState(Array(data.length).fill(false))
+      }
     }
     fetchOrders()
   }, [])
 
   const changeServedStatus = async (index) => {
-    setServed((prevservedState) =>
-      prevservedState.map((i) =>
-        i === index ? servedState(false) : servedState(true)
-      )
-    )
-
-    const fetchServedOrders = async () => {
-      const { data } = await axios.get(
-        `http://localhost:8080/menu/updateServed/${orders.oid}`
-      )
-      setOrders(data)
-    }
-    fetchServedOrders()
+    await axios.get(`http://localhost:8080/menu/update/served/${index}`)
+    window.location.reload();
+   
   }
 
   return (
     <>
       <h1>Orders</h1>
+      <Button
+        onClick={() => navigate('/served')}
+        variant={ 'primary' }
+        className="btn-sm"
+      >
+        Served 
+      </Button>
       <Table striped bordered hover responsive className="table-sm">
         <thead>
           <tr>
@@ -62,10 +66,10 @@ const Admin = () => {
               <td>
                 <Button
                   onClick={() => changeServedStatus(order.oid)}
-                  variant={servedState ? 'primary' : 'light'}
+                  variant={servedState ? "primary" : "light"}
                   className="btn-sm"
                 >
-                  {servedState[order.oid] ? 'Yes' : 'No'}
+                  YES
                 </Button>
               </td>
             </tr>
@@ -73,7 +77,7 @@ const Admin = () => {
         </tbody>
       </Table>
     </>
-  )
-}
+  );
+};
 
-export default Admin
+export default Admin;
