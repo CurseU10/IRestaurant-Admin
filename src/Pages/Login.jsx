@@ -17,20 +17,19 @@ const Login = () => {
     if (email === '' || password === '') {
       alert('Please fill all the fields')
       return
-    }else {
-    try{
-      const admin = await axios.post('http://localhost:8080/admin/login',{
-      username:email,password:password
-    }) ;
-    console.log(admin.data)
-    window.localStorage.setItem("rid",admin.data)
-    navigate('/admin')
-  }catch(e){
-      alert('Invalid username or password')
-    } 
+    } else {
+      try {
+        const admin = await axios.post('http://localhost:8080/admin/login', {
+          username: email,
+          password: password,
+        })
+        console.log(admin.data)
+        window.localStorage.setItem('rid', admin.data)
+        navigate('/admin')
+      } catch (e) {
+        alert('Invalid username or password')
+      }
     }
-
-
   }
 
   return (
