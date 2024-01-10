@@ -19,7 +19,7 @@ const Login = () => {
       return
     } else {
       try {
-        const admin = await axios.post('http://localhost:8080/admin/login', {
+        const admin = await axios.post('https://2f3a-2405-201-3010-7be1-7c45-9302-ae72-e4b9.ngrok-free.app/admin/login', {
           username: email,
           password: password,
         })
