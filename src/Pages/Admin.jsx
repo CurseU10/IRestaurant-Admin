@@ -11,7 +11,7 @@ const Admin = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       const rid = window.localStorage.getItem('rid')
-      const { data } = await axios.get(
+      const { data } = await axios.post(
         `https://2f3a-2405-201-3010-7be1-7c45-9302-ae72-e4b9.ngrok-free.app/menu/nonServed/${rid}`
       )
       setOrders(data)
@@ -26,10 +26,11 @@ const Admin = () => {
   }, [])
 
   const changeServedStatus = async (index) => {
-    await axios.get(`https://2f3a-2405-201-3010-7be1-7c45-9302-ae72-e4b9.ngrok-free.app/menu/update/served/${index}`)
+    await axios.post(`https://2f3a-2405-201-3010-7be1-7c45-9302-ae72-e4b9.ngrok-free.app/menu/update/served/${index}`)
     window.location.reload();
    
   }
+
 
   return (
     <>
