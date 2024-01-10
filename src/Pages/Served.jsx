@@ -32,9 +32,9 @@ const Served = () => {
         </thead>
 
         <tbody>
-          {orders.length>0 && orders.map((order) => (
+          {orders.length>0 && orders.map((order,index) => (
             <tr key={order.oid}>
-              <td>{order.oid}</td>
+              <td>{index+1}</td>
               <td>{order.createdon}</td>
               <td>{order.oname}</td>
               <td>{order.oitems}</td>

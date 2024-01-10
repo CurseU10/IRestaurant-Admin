@@ -55,9 +55,9 @@ const Admin = () => {
         </thead>
 
         <tbody>
-          {orders.map((order) => (
+          {orders.map((order,index) => (
             <tr key={order.oid}>
-              <td>{order.oid}</td>
+              <td>{index+1}</td>
               <td>{order.createdon}</td>
               <td>{order.oname}</td>
               <td>{order.oitems}</td>
