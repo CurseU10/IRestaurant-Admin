@@ -9,7 +9,7 @@ const Served = () => {
     const fetchOrders = async () => {
       const orderID = window.localStorage.getItem('rid')
       const { data } = await axios.post(
-        `https://087c-2405-201-3010-7be1-7c45-9302-ae72-e4b9.ngrok-free.app/menu/served/${orderID}`
+        `https://fd9c-2409-4043-4e89-6f57-1db6-671c-2ab4-c5e4.ngrok-free.app/menu/served/${orderID}`
       )
       setOrders(data)
     }
